@@ -13,15 +13,28 @@ const Shop = () => {
             .then(data => setProducts(data))
     }, [])
     useEffect(()=>{
+        const savedCard =[]
         const storedCart = getShoppingCart()
-        console.log(storedCart)
-    },[])
+        // get id of added product
+        for(const id in storedCart){
+            // get product from products state by using id
+           const addedProduct=products.find(product=>product.id === id)
+           if(addedProduct){
+            // add quantity
+            const quantity = storedCart[id]
+            addedProduct.quantity = quantity
+            // add the added product to save card
+            savedCard.push(addedProduct)
+           }
+        //    console.log('mori',addedProduct) 
+        }
+        setCart(savedCard)
+    },[products])
 
     const handleAddToCart = (product) => {
     const newCart = [...cart,product]
     setCart(newCart)
     addToDb(product.id)
-    console.log('mori kha')
     }
     
 
